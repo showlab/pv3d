@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- <meta name="description"
+        content="HyperNeRF handles topological variations by modeling a family of shapes in a higher-dimensional space, thereby producing more realistic renderings and more accurate geometric reconstructions.">
+  <meta name="keywords" content="HyperNeRF, Nerfies, D-NeRF, NeRF"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta property="og:image" content="./static/images/thumbnail.png"/>
+  <link rel="image_src" href="./static/images/thumbnail.png"> -->
+  <!-- <link rel="icon"
+        type="image/x-icon"
+        href="./static/images/favicon.png"/> -->
+
+  <title>PV3D: A 3D Generative Model for Portrait Video Generation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EDF010G6PN"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EDF010G6PN');
+
+
+  </script>
+
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="./static/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="./static/slick/slick-theme.css"/>
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div> -->
+  <!-- <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div> -->
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <!-- <div class="column is-4 has-text-centered">
+          <img src="static/images/logo.svg" alt="HyperNeRF"/>
+        </div> -->
+      </div>
+      <div class="container has-text-centered">
+        <h1 class="title is-1 publication-title">
+          PV3D: A 3D Generative Model for </br> Portrait Video Generation
+        </h1>
+        <div class="is-size-5 publication-authors">
+          <div class="author-block">
+            <a href="https://scholar.google.com/citations?hl=en&user=-4iADzMAAAAJ&view_op=list_works&gmla=AJsN-F5zr_RJh2WiDef4pgRBcyVNOxIrp09P3UGb_EhMhvJm2izDEWQ-3oOfzD1gLB3JPHU1Ao9Uq0mgxsIEayPAE92cFf_dgQPWwERaddUJimwuzjpg1cU">Eric Zhongcong Xu</a><sup>1</sup></div>
+          <div class="author-block">
+            <a href="http://jeff95.me/">Jianfeng Zhang</a><sup>2</sup></div>
+          <div class="author-block">
+            <a href="https://scholar.google.com.sg/citations?user=8gm-CYYAAAAJ&hl=en">Jun Hao Liew</a><sup>2</sup></div>
+          <div class="author-block">
+            Wenqing Zhang<sup>2</sup>
+          </div>
+          <div class="author-block">
+            <a href="https://songbai.site/">Song Bai</a><sup>2</sup>
+          </div>
+          <div class="author-block">
+            <a href="https://sites.google.com/site/jshfeng/home">Jiashi Feng</a><sup>2</sup>
+          </div>
+          <div class="author-block">
+            <a href="https://sites.google.com/view/showlab">Mike Zheng Shou</a><sup>1</sup>
+          </div>
+        </div>
+
+        <div class="is-size-5 publication-authors">
+          <span class="author-block"><sup>1</sup>Show Lab, National University of Singapore,</span>
+          <span class="author-block"><sup>2</sup>ByteDance</span>
+        </div>
+
+        <div class="column has-text-centered">
+          <div class="publication-links">
+            <!-- PDF Link. -->
+            <!-- <span class="link-block">
+                <a href="https://arxiv.org/pdf/2106.13228.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+            <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+            </span>
+            <span class="link-block">
+              <a href=""
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+                </a>
+            </span>
+            <!-- Dataset Link. -->
+            <span class="link-block">
+              <a href=""
+                 class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="far fa-images"></i>
+                </span>
+                <span>Data</span>
+                </a>
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <center>
+        <figure style="width: 80%;">
+          <a href="assets/teaser_img.jpg">
+              <img width="80%" src="assets/teaser_img.jpg">
+          </a>
+          <p class="caption" style="margin-bottom: 1px;  text-align: justify">
+             We propose a 3D-aware portrait video GAN, PV3D, which is capable to generate a large variety of 3D-aware portrait videos with high-quality appearance, motions, and 3D geometry. PV3D is trainable on 2D monocular videos only, without the need of any 3D or multi-view annotations.
+          </p>
+        </figure>
+        </br>
+        </br>
+        <video id="teaser" autoplay controls muted loop playsinline width="70%">
+          <source src="./assets/teaser_demo.mp4"
+                  type="video/mp4">
+        </video>
+        <video id="teaser" autoplay controls muted loop playsinline width="70%">
+          <source src="./assets/vc_128_stitched_demo.mp4"
+                  type="video/mp4">
+        </video>
+      </center>
+      <h2 class="subtitle has-text-centered">
+        PV3D is able to generate diverse videos with multi-view consistency and detailed dynamic 3D geometry. 
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Recent advances in generative adversarial networks (GANs) have demonstrated the capabilities of generating stunning photo-realistic portrait images. While some prior works have applied such image GANs to unconditional 2D portrait video generation and static 3D portrait synthesis, there are few works successfully extending GANs for generating 3D-aware portrait videos. In this work, we propose PV3D, the first generative framework that can synthesize multi-view consistent portrait videos.  Specifically, our method extends the recent static 3D-aware image GAN to the video domain by generalizing the 3D implicit neural representation to model the spatio-temporal space. To introduce motion dynamics to the generation process, we develop a motion generator by stacking multiple motion layers to generate motion features via modulated convolution. To alleviate motion ambiguities caused by camera/human motions, we propose a simple yet effective camera condition strategy for PV3D, enabling both temporal and multi-view consistent video generation. Moreover, PV3D introduces two discriminators for regularizing the spatial and temporal domains to ensure the plausibility of the generated portrait videos. These elaborated designs enable PV3D to generate 3D-aware motion-plausible portrait videos with high-quality appearance and geometry, significantly outperforming prior works. As a result, PV3D is able to support many downstream applications such as animating static portraits and view-consistent video motion editing. Code and models will be released.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Comparison with Baselines</h2>
+      </div>
+      </br>
+      <table width="100%" align="center">
+          <tr>
+              <td  width="20%" style="text-align:center; font-size:14px"><b>StyleNeRF+MCG-HD</b></td>
+              <td  width="20%" style="text-align:center; font-size:14px"><b>EG3D+MCG-HD</b></td>
+              <td  width="20%" style="text-align:center; font-size:14px"><b>3DVidGen</b></td>
+              <td  width="20%" style="text-align:center; font-size:14px"><b>3DVidGen (EG3D)</b></td>
+              <td  width="20%" style="text-align:center; font-size:14px"><b>PV3D (Ours)</b></td>
+          </tr>
+          <tr>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_stylenerf/voxceleb.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_eg3d/voxceleb.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen/voxceleb.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen_eg3d/voxceleb.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/ours/voxceleb.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>              
+          </tr>
+          <tr>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_stylenerf/celebvhq.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_eg3d/celebvhq.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen/celebvhq.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen_eg3d/celebvhq.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/ours/celebvhq.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>        
+          </tr>
+          <tr>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_stylenerf/th1khd.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/mocoganhd_eg3d/th1khd.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen/th1khd.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/3dvidgen_eg3d/th1khd.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+              <td><video width="100%" muted loop autoplay><source src="qual_comp/ours/th1khd.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>     
+          </tr>
+      </table>
+    </div>
+  </div>
+  </br>
+  </br>
+  </br>
+  </br>
+  
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Static Portrait Animation</h2>
+      </div>
+      </br>
+    <table width="100%" align="center">
+        <tr>
+            <td  width="20%" style="text-align:center; font-size:14px"><b>Input</b></td>
+            <td  width="20%" style="text-align:center; font-size:14px"><b>Inversion</b></td>
+            <td  width="20%" style="text-align:center; font-size:14px"><b>Animation</b></td>
+            <td  width="40%" style="text-align:center; font-size:14px"><b>Multi-view</b></td>
+        </tr>
+        <tr>
+            <td><figure style="width: 100%;"><img width="100%" src="application/animation/female/gt.png"></figure></td>
+            <td><figure style="width: 100%;"><img width="100%" src="application/animation/female/opt_gen_img.png"></figure></td>
+            <td><video width="100%" muted loop autoplay><source src="application/animation/female/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/animation/female/multi_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>           
+        </tr>
+        <tr>
+            <td><figure style="width: 100%;"><img width="100%" src="application/animation/male/gt.png"></figure></td>
+            <td><figure style="width: 100%;"><img width="100%" src="application/animation/male/opt_gen_img.png"></figure></td>
+            <td><video width="100%" muted loop autoplay><source src="application/animation/male/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/animation/male/multi_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>            
+        </tr>
+      </table> 
+      <p class="caption" style="margin-bottom: 1px; text-align: center">
+        Given static portraits, we fix PV3D and optimize the intermediate appearance code to inverse input images. By sampling a random motion code, we can animate the static portraits with natural motion and synthesize portrait videos with multi-view consistency.
+      </p>
+    </div>
+  </div>
+  </br>
+  </br>
+  </br>
+  </br>
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Monocular Video Reconstruction and Motion Editing</h2>
+      </div>
+      </br>
+      <table width="100%" align="center">
+        <tr>
+            <td  width="12.5%" style="text-align:center; font-size:14px"><b>Input</b></td>
+            <td  width="12.5%" style="text-align:center; font-size:14px"><b>Inversion</b></td>
+            <td  width="25%" style="text-align:center; font-size:14px"><b>Multi-view reconstruction</b></td>
+            <td  width="25%" style="text-align:center; font-size:14px"><b>Random motion 1</b></td>
+            <td  width="25%" style="text-align:center; font-size:14px"><b>Random motion 2</b></td>
+        </tr>
+        <tr>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/male/gt_vid.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/male/opt_gen_vid.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>      
+            <td><video width="100%" muted loop autoplay><source src="application/editing/male/multi_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/male/edit_0001.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+            <td><video width="100%" muted loop autoplay><source src="application/editing/male/edit_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>          
+        </tr>
+        <tr>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/female/gt_vid.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/female/opt_gen_vid.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>      
+            <td><video width="100%" muted loop autoplay><source src="application/editing/female/multi_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/editing/female/edit_0001.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+            <td><video width="100%" muted loop autoplay><source src="application/editing/female/edit_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>       
+        </tr>
+      </table> 
+      <p class="caption" style="margin-bottom: 1px; text-align: center">
+        PV3D provides a quick solution for 3D reconstruction on monocular videos. The motion of input videos can be manipulated by changing motion codes. The results can maintain multi-view consistency.
+      </p>
+    </div>
+  </div>
+</br>
+</br>
+</br>
+</br>
+<div class="container is-max-desktop">
+  <div class="columns is-centered">
+    <h2 class="title is-3">Motion Retargeting</h2>
+    </div>
+    </br>
+    <table width="100%" align="center">
+        <tr>
+            <td  width="12.5%" style="text-align:center; font-size:14px"><b>Source</b></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video1/source.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay>Your browser does not support the video tag.</video></td>    
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video2/source.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay>Your browser does not support the video tag.</video></td>   
+        </tr>
+        <tr>
+            <td  width="25%" style="text-align:center; font-size:14px"><b>Target 1 (Image)</b></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/image1/male_retarget/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/image1/male_retarget/output.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/image1/female_retarget/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/image1/female_retarget/output.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>       
+        </tr>
+        <tr>
+            <td  width="25%" style="text-align:center; font-size:14px"><b>Target 2 (Video)</b></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video2/male_retarget/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video2/male_retarget/output.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video1/female_retarget/cano_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+            <td><video width="100%" muted loop autoplay><source src="application/retarget/video1/female_retarget/output.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+        </tr>
+      </table> 
+      <p class="caption" style="margin-bottom: 1px; text-align: center">
+        Based on PV3D, the motion code can be used for retargeting portrait videos of different identities.
+      </p>
+    <br>
+    <table width="60%" align="center">
+        <tr>
+            <td><video width="100%" muted loop autoplay><source src="results/ours/fix_z_motion_grid.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+        </tr>
+      </table> 
+      <p class="caption" style="margin-bottom: 1px; text-align: center">
+        By fixing motion code, PV3D can synthesize videos with diverse apperances but similar motions.
+      </p>
+  </div>
+</div>
+</br>
+</br>
+</br>
+</br>
+<div class="container is-max-desktop">
+  <div class="columns is-centered">
+    <h2 class="title is-3">Long Videos Synthesis</h2>
+    </div>
+    </br>
+    <table  width="100%" align="center"> 
+      <tr>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0006.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0015.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0019.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0012.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0013.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0014.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0001.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0003.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+      </tr>
+      <tr>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0008.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0018.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0011.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0016.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0025.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0005.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>      
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0004.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0007.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+        </tr>
+      <tr>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0020.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0021.mp4" type="video/mp4">Your browser does not support the video tag.</video></td> 
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0023.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0017.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0026.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0000.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>      
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0010.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>
+          <td><video width="100%" muted loop autoplay><source src="results/ours48/rgb_0009.mp4" type="video/mp4">Your browser does not support the video tag.</video></td>             
+      </tr>
+  </table>
+  <p class="caption" style="margin-bottom: 1px; text-align: center">
+      Generated videos of PV3D trained on 48 frame clips (VoxCeleb).
+  </p>
+  </div>
+</div>
+
+<section class="section" id="BibTeX">
+  <div class="container content is-max-desktop">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{xu2022pv3d,
+    author = {Xu, Eric Zhongcong and Zhang, Jianfeng and Liew, Junhao and Zhang, Wenqing and Bai, Song and Feng, Jiashi and Shou, Mike Zheng},
+    title = {PV3D: A 3D Generative Model for Portrait Video Generation},
+    year = {2022},
+    publisher = {arxiv}      
+}</code></pre>
+  </div>
+</section>
+
+
+<!-- <section class="section" id="acknowledgements">
+  <div class="container content is-max-desktop">
+    <h2 class="title">Acknowledgements</h2>
+    <p>Special thanks to <a href="https://homes.cs.washington.edu/~holynski/">Aleksander Hołyński</a>,
+      <a href="https://roxanneluo.github.io/">Xuan Luo</a>, and Haley Cho for their support and
+      help with collecting data. Thanks to <a href="https://zhengqili.github.io/">Zhengqi Li</a> and
+      <a href="http://www.oliverwang.info/">Oliver Wang</a> for their help with the NSFF experiments.</p>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script type="text/javascript" src="./static/slick/slick.min.js"></script>
+</body>
+</html>

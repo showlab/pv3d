@@ -1,0 +1,9 @@
+app.yaml
+.DS_store
+.idea
+._.DS_Store
+._*.mp4
+._*.png
+._*.md
+._*.html
+
